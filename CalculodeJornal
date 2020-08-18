@@ -1,0 +1,19 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+int Dias;
+float Salario , Jornal;
+cout<<"Ingresar la cantidad de dias trabajados"<<endl;
+cin>> Dias;
+
+cout<<"Ingresar el jornal"<<endl;
+cin>> Jornal;
+Salario= Jornal*Dias;
+
+cout<<"El monto del salario es de :"<<Salario;
+
+    return 0;
+}
