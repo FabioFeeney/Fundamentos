@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	float h, l, d, a;
+	cout << "Ingrese las dimensiones del paralelepipedo." << endl;
+	cout << "El largo es :";
+	cin >> l;
+	cout << "El ancho es :";
+	cin >> d;
+	cout << "La altura es :";
+	cin >> h;
+	a = (2 * l * d) + (2 * l * h) + (2 * d * h);
+	cout << "El area del paralelepipedo es :" << a << " metros cuadrados.";
+	return 0;
+}
