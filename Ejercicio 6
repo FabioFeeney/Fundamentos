@@ -1,0 +1,32 @@
+#include <iostream>
+#include "conio.h"
+#include <math.h>
+#include <string.h>
+using namespace std;
+int main()
+{
+	float h, t, m, s;
+	cout << "Ingresar Horas :";
+	cin >> h;
+	cout << "Ingresar minutos :";
+	cin >> m;
+	cout << "Ingresar segundos :";
+	cin >> s;
+	if (h < 1 ) {
+		t = h + 12;
+		cout << "El tiempo en formato de 12 horas es :" << t << ":" << m << ":" << s << "am";
+	}
+	if (h > 1 & h < 12) {
+		t = h;
+		cout << "El tiempo en formato de 12 horas es :" << t << ":"<<m<<":"<<s<<"am";
+	}
+	if(h>=12&h<13){
+		t = h;
+		cout << "El tiempo en formato de 12 horas es :" << t << ":" << m << ":" << s << "pm";
+	}
+	if (h >= 13 & h < 24) {
+		t = h - 12;
+		cout << "El tiempo en formato de 12 horas es :" << t << ":" << m << ":" << s << "pm";
+	}
+	
+}
