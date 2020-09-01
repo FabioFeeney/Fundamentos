@@ -1,0 +1,15 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+int main()
+{
+	float interes, tiempo, capital, ganancia;
+	cout<< "Ingrese el capital inicial :";
+	cin >> capital;
+	cout << "Ingrese el interes anual :";
+	cin >> interes;
+	cout << "Ingrese el tiempo :";
+	cin >> tiempo;
+	ganancia=(capital*interes)*tiempo;
+	cout << "La ganancia total es :"<<ganancia;
+}
