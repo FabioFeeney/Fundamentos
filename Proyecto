@@ -1,0 +1,428 @@
+//Se necesita tener la libreria allegro
+//https://www.youtube.com/watch?v=ETcUmU2tpvg------>link para instalar allegro
+//Enlace para las imagenes------------------------->https://drive.google.com/drive/folders/1l0BaLhpUwp2R7_k_kfnu9T8hQQ3D6MJF?usp=sharing
+//para que funcione correctamente se necesitan tener las imagenes en una subcarpeta dentro del programa llamada iamgenes como ejemplo del enrutamiento que deberia tener dentro 
+//del visual seria asi "imagenes/A-hamburguesa.jpg"
+//Si tiene alguna consulta para hacerlo funcionar mi numero es 70833000.
+
+#include <windows.h>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <locale.h>
+#include <string.h>
+#include <string>
+#include <cstring>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
+using namespace std;
+int opcion, hamburguesagenerica = 0, pizzagenerica = 0, papasfritasgenericas = 0, cafegenerico = 0, donagenerica = 0, heladogenerico = 0, finalizador, norden = 0, Nrodeorden = 0, nit;
+char nombrefactura[30], x[1];
+//funciones: 
+int informe(int i1, int i2, int i3, int i4, int i5, int i6);
+int NIT();
+char nombre();
+int nrodeorden();
+int FACTURA();
+int menu1();
+
+//alegrame la vida
+
+ALLEGRO_DISPLAY* ventana;
+ALLEGRO_FONT* hello_honey;
+ALLEGRO_TIMER* segundoTimer;
+ALLEGRO_TIMER* fps;
+ALLEGRO_EVENT_QUEUE* event_queue;
+
+int main()
+{
+	system("Color F0");
+	int opcional;
+	int ancho = 900;
+	int alto = 900;
+	if (!al_init()) {
+
+		al_show_native_message_box(NULL, "ERROR CRITICO", "ERROR: 404", "No se pudo cargar correctamente la libreria alelgro", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+	al_init_font_addon();
+	al_init_ttf_addon();
+	al_init_primitives_addon();
+	al_install_mouse();
+	al_init_image_addon();
+
+
+
+	ventana = al_create_display(ancho, alto);
+
+
+	int ancho_W = GetSystemMetrics(SM_CXSCREEN);
+	int alto_W = GetSystemMetrics(SM_CYSCREEN);
+
+	al_set_window_title(ventana, "GRS");
+	al_set_window_position(ventana, ancho_W / 2 - ancho / 2, alto_W / 2 - alto / 2);
+
+	//al_show_native_message_box(NULL, "ERROR CRITICO", "ERROR: 404", "No se pudo cargar correctamente la libreria alelgro", NULL, ALLEGRO_MESSAGEBOX_OK_CANCEL);
+
+	//eventos timer
+	segundoTimer = al_create_timer(1.0);
+	fps = al_create_timer(1.0 / 30);
+
+	event_queue = al_create_event_queue();
+
+	al_register_event_source(event_queue, al_get_timer_event_source(fps));
+	al_register_event_source(event_queue, al_get_timer_event_source(segundoTimer));
+	al_register_event_source(event_queue, al_get_mouse_event_source());
+
+	//al_register_event_source(event_queue, al_get_mouse_event_source());
+
+	al_start_timer(fps);
+	al_start_timer(segundoTimer);
+
+
+
+	int acumulativocomida[5];
+	for (int i = 0; i < 6; i++) {
+		acumulativocomida[i] = 0;
+	}
+	do {
+		cout << "--------------OPCIONES---------------" << endl;
+		cout << "Para continuar en menu" << endl;
+		cout << "si=1" << endl;
+		cout << "no=0" << endl;
+		cout << "--------------------------------------"<<endl;
+		cout << "Para Datos de NIT" << endl;
+		cout << "si" << endl;
+		cout << "no" << endl;
+		cout << "--------------------------------------"<<endl;
+
+		do {
+			opcional = menu1();
+			switch (opcional) {
+			case 1: cout << "Selecciono hamburguesa"<<endl;
+				hamburguesagenerica = hamburguesagenerica + 1;
+				acumulativocomida[0] = acumulativocomida[0] + hamburguesagenerica;	break;
+			case 2: 
+				cout << "Selecciono pizza" << endl; pizzagenerica = pizzagenerica + 1;
+				acumulativocomida[1] = acumulativocomida[1] + pizzagenerica; break;
+			case 3: cout << "Selecciono papas fritas" << endl;
+				papasfritasgenericas = papasfritasgenericas + 1;
+				acumulativocomida[2] = acumulativocomida[2] + papasfritasgenericas; break;
+			case 4: cout << "Selecciono cafe" << endl;
+				cafegenerico = cafegenerico + 1;
+				acumulativocomida[3] = acumulativocomida[3] + cafegenerico;	break;
+			case 5:  cout << "Selecciono donas" << endl;
+				donagenerica = donagenerica + 1;
+				acumulativocomida[4] = acumulativocomida[4] + donagenerica;	break;
+			case 6: cout << "Selecciono helado" << endl;
+				heladogenerico = heladogenerico + 1;
+				acumulativocomida[5] = acumulativocomida[5] + heladogenerico; break;
+			case 117711: cout << endl << endl;
+				informe(acumulativocomida[0], acumulativocomida[1], acumulativocomida[2], acumulativocomida[3], acumulativocomida[4], acumulativocomida[5]); break;
+			}
+			cout << "Desea ordenar algo mas?"<<endl;
+			cin >> finalizador;
+			cout << endl << endl;
+			if (finalizador == 0) {
+
+				/* aqui va mi factura */
+
+
+				FACTURA();
+
+
+				hamburguesagenerica = 0;
+				pizzagenerica = 0;
+				papasfritasgenericas = 0;
+				cafegenerico = 0;
+				donagenerica = 0;
+				heladogenerico = 0;
+			}
+		} while (finalizador != 0);
+
+	} while (opcion != 3521257);
+
+}
+//funciones 
+int informe(int i1, int i2, int i3, int i4, int i5, int i6) {
+	float costoventadiariaitem[5];
+	int i = 0;
+	float costedeproducciondiariototal = 0, gastosfijos = 0, gastototal = 0, gananciabrutadiariatotal = 0;
+	float costosunitarios[5];
+	float gananciabruta[5];
+	float preciodeventa[5];
+	float ventadiaria[5];
+	cout << "Ingrese el costo de produccion de las hamburguesas y el precio de venta de las hamburguesas" << endl;
+	cout << "Precio de Costo Unitario----->$";	cin >> costosunitarios[0];
+	cout << "Precio de venta-------------->$"; cin >> preciodeventa[0];
+	costoventadiariaitem[0] = costosunitarios[0] * i1;
+	gananciabruta[0] = preciodeventa[0] * i1;
+	cout << endl;
+	cout << "Ingrese el costo de produccion y el precio de venta de las pizzas" << endl;
+	cout << "Precio de Costo Unitario----->$"; cin >> costosunitarios[1];
+	cout << "Precio de venta-------------->$"; cin >> preciodeventa[1];
+	costoventadiariaitem[1] = costosunitarios[1] * i2;
+	gananciabruta[1] = preciodeventa[1] * i2;
+	cout << endl;
+	cout << "Ingrese el costo de produccion y el precio de ventas de las papas fritas" << endl;
+	cout << "Precio de Costo Unitario----->$"; cin >> costosunitarios[2];
+	cout << "Precio de venta-------------->$"; cin >> preciodeventa[2];
+	costoventadiariaitem[2] = costosunitarios[2] * i3;
+	gananciabruta[2] = preciodeventa[2] * i3;
+	cout << endl;
+	cout << "Ingrese el costo de produccion y el precio de venta de cafe" << endl;
+	cout << "Precio de Costo Unitario----->$"; cin >> costosunitarios[3];
+	cout << "Precio de venta-------------->$"; cin >> preciodeventa[3];
+	costoventadiariaitem[3] = costosunitarios[3] * i4;
+	gananciabruta[3] = preciodeventa[3] * i4;
+	cout << endl;
+	cout << "Ingrese el costo de produccion y el precio de venta de las donas" << endl;
+	cout << "Precio de Costo Unitario----->$" ; cin >> costosunitarios[4];
+	cout << "Precio de venta-------------->$" ; cin >> preciodeventa[4];
+	costoventadiariaitem[4] = costosunitarios[4] * i5;
+	gananciabruta[4] = preciodeventa[4] * i6;
+	cout << endl;
+	cout << "Ingrese el costo de produccion y el precio de venta de los helados" << endl;
+	cout << "Precio de Costo Unitario----->$"; cin >> costosunitarios[5];
+	cout << "Precio de venta-------------->$"; cin >> preciodeventa[5];
+	costoventadiariaitem[5] = costosunitarios[5] * i6;
+	gananciabruta[5] = preciodeventa[5] * i6;
+	cout << endl;
+	for (int i = 0; i < 6; i++) {
+		costedeproducciondiariototal = costedeproducciondiariototal + costoventadiariaitem[i];
+	}
+	for (int i = 0; i < 6; i++) {
+		gananciabrutadiariatotal = gananciabrutadiariatotal + gananciabruta[i];
+	}
+	cout << "Ingrese los costos fijos por dia:" << endl;
+	cout << "costos fijos-------------->$"; cin >> gastosfijos;
+	cout << endl;
+	gastototal = costedeproducciondiariototal + gastosfijos;
+	cout << "los gastos totales de hoy son: " << gastototal << endl;
+	cout << "Los ingresos brutos total de hoy son: " << gananciabrutadiariatotal << endl;
+	if (gananciabrutadiariatotal > gastototal) {
+		cout << "Tuvo una ganancia de :$" << gananciabrutadiariatotal - gastototal;
+	}
+	else { cout << "Tuvo una perdida de :$" << gananciabrutadiariatotal - gastototal; }
+	return 0;
+}
+int NIT() {
+	cout << "desea usar nit para su factura?" << endl;
+	cin >> x;
+	if ((x[0] == 's') || (x[0] == 'S') || (x[0] == 's' and x[1] == 'i') || (x[0] == 'S' and x[1] == 'I') || (x[0] == 'S' and x[1] == 'i')) {
+		cout << "No. ";
+		cin >> nit;
+		return nit;
+	}if ((x[0] == 'n') || (x[0] == 'N') || (x[0] == 'n' and x[1] == 'o') || (x[0] == 'N' and x[1] == 'O') || (x[0] == 'N' and x[1] == 'o')) {
+		nit = 0;
+		return nit;
+	}
+	else {
+		cout << "por favor ingrese una respuesta entre si o no" << endl;
+		return NIT();
+	}
+}
+char nombre() {
+
+	cout << "nombre para la factura: \n";
+	cin >> nombrefactura;
+	return nombrefactura[0];
+}
+int FACTURA() {
+	int factura = 55;
+
+	nombre();
+	NIT();
+	system("cls");
+
+	//factura 
+	system("Color F0");
+	printf("\n \n \t \t * HAMBURGUESAS GORDO PATA DE LE%CA * \t\t\t\n", 165);
+	cout << "\t \t \t       1ra sucursal \t \t \t\n";
+	cout << "\t \t c/ MANUEL IGNACIO SALVATIERRA Nro 174 \t \t \t\n";
+	cout << "\t \t \t  SANTA CRUZ - BOLIVIA \t \t \t\n\n";
+
+	cout << "\t \t \t     F A C T U R A  \t \t \t\n";
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+	cout << "\t \t \t     NIT: 1028627025 \t \t \t\n";
+	cout << "\t \t \t FACTURA No. 000017573" << factura + 1 << "\t \t \t\n";
+	cout << "\t \t    AUTORIZACION No. 263401000126231 \t \t \t\n";
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+
+	// fecha y hora 
+	auto t = time(nullptr);
+#pragma warning(suppress : 4996)
+	auto tm = *std::localtime(&t);
+	ostringstream oss;
+	oss << put_time(&tm, "\t\t FECHA: %d/%m/%Y  \tHORA: %H:%M:%S");
+	auto str = oss.str();
+	cout << str << endl;
+
+	// nombre 
+	cout << "\t \t SR.(ES):  " << nombrefactura << "\t \t \t\n";
+	cout << "\t \t NIT:      " << nit << "\t \t \t\n";
+
+
+	// poductos
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+	cout << "\t \t PRODUCTOS:     |CANTIDAD: |\tPRECIO:   \t\t\t\n";
+
+
+	if (hamburguesagenerica > 0) {
+		cout << "\t \t HAMBURGUESA(s) \t" << hamburguesagenerica << "\t" << 4 * hamburguesagenerica << "Bs.\n";
+	}if (pizzagenerica > 0) {
+		cout << "\t \t PIZZA(s)        \t" << pizzagenerica << "\t" << 12 * pizzagenerica << "Bs.\n";
+	}if (papasfritasgenericas > 0) {
+		cout << "\t \t PAPAS FRITAS(s) \t" << papasfritasgenericas << "\t" << 2 * papasfritasgenericas << "Bs.\n";
+	}if (cafegenerico > 0) {
+		cout << "\t \t CAFE(s)        \t" << cafegenerico << "\t" << 2 * cafegenerico << "Bs.\n";
+	}if (heladogenerico > 0) {
+		cout << "\t \t HELADO(s)       \t" << heladogenerico << "\t" << 1 * heladogenerico << "Bs.\n";
+	}if (donagenerica > 0) {
+		cout << "\t \t DONA(s)         \t" << donagenerica << "\t" << 1 * donagenerica << "Bs.\n";
+	}
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+	cout << "\t \t    ''Gracias por su preferencia.''  \t \t \t\n";
+	nrodeorden();
+	cout << "\t \t             ORDEN No." << norden << "\t \t \t\n";
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+	printf("\t \tWIFI: ElGordoTato CONTRASE%CA: CH4U_MAD0N4\t \t \t\n", 165);
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+	cout << "\t \t**ESTA FACTURA CONTRIBUYE AL DESARROLLO \t \t \t\n";
+	cout << "\t \t DEL PAIS, EL USO ILICITO DE ESTA SERA  \t \t \t\n";
+	cout << "\t \t   SANCIONADO DE ACUERDO A LA LEY** \t \t \t\n";
+	cout << "\t \t--------------------------------------- \t \t \t\n";
+	cout << "\t \t UD. FUE ATENDIDO POR: SEBASTIAN SORICH \t \t \t\n";
+	cout << "\t \t -SUGERENCIAS/RECLAMOS AL No. 68682046- \t \t \t\n\n\n";
+
+
+	system("pause");
+	return 0;
+
+}
+int nrodeorden() {
+
+	while (1000 > norden) {
+		norden++;
+		return norden;
+
+	}
+}
+int menu1() {
+	int opcion;
+	bool salida = false;
+	int segundos = 0;
+	int x = -1, y = -1;
+	ALLEGRO_COLOR blanco = al_map_rgb(255, 255, 255);
+	ALLEGRO_COLOR azar = al_map_rgb(255, 50, 65);
+
+
+	ALLEGRO_BITMAP* HM = al_load_bitmap("imagenes/A-hamburguesa.jpg");
+	ALLEGRO_BITMAP* fondo1 = al_load_bitmap("imagenes/menu-comidas.jpg");
+	ALLEGRO_BITMAP* CM = al_load_bitmap("imagenes/B-cafe.jpg");
+	ALLEGRO_BITMAP* HEM = al_load_bitmap("imagenes/C-helado.jpg");
+	ALLEGRO_BITMAP* DM = al_load_bitmap("imagenes/D-dona.jpg");
+	ALLEGRO_BITMAP* PM = al_load_bitmap("imagenes/E-pizza.jpg");
+	ALLEGRO_BITMAP* PAM = al_load_bitmap("imagenes/F-papas.jpg");
+	//menu
+	int botones[] = { 0 };
+	while (!salida)
+	{
+		ALLEGRO_EVENT Evento;
+		al_wait_for_event(event_queue, &Evento);
+
+		if (Evento.type == ALLEGRO_EVENT_TIMER) {
+			if (Evento.timer.source == segundoTimer) {
+				segundos++;
+			}
+
+		}
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+		if (Evento.type == ALLEGRO_EVENT_MOUSE_AXES || Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		{
+			if (botones[0] == 0) {
+				al_draw_bitmap(fondo1, 0, 0, 0);
+			}
+			if(Evento.mouse.button & 2){
+					opcion = 117711;
+					salida = true;
+			}
+			x = Evento.mouse.x;
+			y = Evento.mouse.y;
+			if (x >= 425 && x <= 583 && y >= 83 && y <= 331) {
+				al_draw_bitmap(CM, 0, 0, 0);
+
+				if (Evento.mouse.button & 1) {
+					opcion = 4;
+					salida = true;
+				}
+			}
+			else {
+				if (x >= 54 && x <= 270 && y >= 109 && y <= 301) {
+					al_draw_bitmap(HM, 0, 0, 0);
+
+					if (Evento.mouse.button & 1) {
+						opcion = 1;
+						salida = true;
+					}
+
+				}
+				else {
+					if (x >= 616 && x <= 804 && y >= 156 && y <= 443) {
+						al_draw_bitmap(HEM, 0, 0, 0);
+
+						if (Evento.mouse.button & 1) {
+							opcion = 6;
+							salida = true;
+						}
+
+					}
+					else {
+						if (x >= 35 && x <= 210 && y >= 432 && y <= 617) {
+							al_draw_bitmap(DM, 0, 0, 0);
+
+							if (Evento.mouse.button & 1) {
+								opcion = 5;
+								salida = true;
+							}
+
+						}
+						else {
+							if (x >= 157 && x <= 443 && y >= 630 && y <= 861) {
+								al_draw_bitmap(PM, 0, 0, 0);
+
+								if (Evento.mouse.button & 1) {
+									opcion = 2;
+									salida = true;
+								}
+
+							}
+							else {
+								if (x >= 656 && x <= 800 && y >= 541 && y <= 884) {
+									al_draw_bitmap(PAM, 0, 0, 0);
+
+									if (Evento.mouse.button & 1) {
+										opcion = 3;
+										salida = true;
+									}
+
+								}
+							}
+						}
+					}
+
+
+				}
+				al_flip_display();
+			}
+		}
+	}
+	return opcion;
+
+
+}
